@@ -60,7 +60,5 @@
   var Notes = require_notesModel();
   var NotesView = require_notesView();
   var model = new Notes();
-  var view = new NotesView();
-  model.addNote("Test Note");
-  view.displayNotes(model.getNotes());
+  var view = new NotesView(model);
 })();
