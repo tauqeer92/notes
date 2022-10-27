@@ -33,6 +33,8 @@ describe('NotesView', () => {
 
         // Act
         view.displayNotes()
+        view.displayNotes()
+        
 
         // Assert
         const notesElement = document.querySelectorAll('div.note');
@@ -54,6 +56,24 @@ describe('NotesView', () => {
         expect(document.querySelector('div.note')).not.toBeNull();
         expect(document.querySelector('div.note').innerText).toEqual('This is a test message');
 
+    })
+
+    it('input 2 notes, expect 2 notes to show in browser', () => {
+        // Arrange
+        document.body.innerHTML = fs.readFileSync('./index.html');
+        const model = new NotesModel()
+        const view = new NotesView(model);
+
+        // Act
+        const input = document.querySelector('#message-input');
+        const button = document.querySelector('#add-note-button');
+        
+        input.value = 'First';
+        button.click()
+        input.value = 'Second';
+        button.click()
+        expect(document.querySelector('div.note')).not.toBeNull();
+        expect(document.querySelectorAll('div.note').length).toBe(2);
     })
 
 

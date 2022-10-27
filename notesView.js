@@ -19,13 +19,28 @@ class notesView {
 
 
     displayNotes() {
-        const array = this.model.getNotes(); 
-        array.forEach((note) => {
+        const array = this.model.getNotes();
+        if (array.length == 1) {
+            const note = array[0]
             const newElement = document.createElement('div');
             newElement.className = 'note';
             newElement.innerText = note;
             document.querySelector('#main-container').append(newElement);
-        })
+
+        }
+
+        else {
+            const note = array[array.length - 1];
+            const newElement = document.createElement('div');
+            newElement.className = 'note';
+            newElement.innerText = note;
+            document.querySelector('#main-container').append(newElement);
+        }
+
+        document.querySelector('#message-input').value = ''
+        
+            
+        
     }
 
 
