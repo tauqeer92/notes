@@ -11,6 +11,9 @@
         constructor() {
           this.notes = [];
         }
+        setNotes(note) {
+          return note;
+        }
         getNotes() {
           return this.notes;
         }
@@ -25,13 +28,27 @@
     }
   });
 
+  // notesClient.js
+  var require_notesClient = __commonJS({
+    "notesClient.js"(exports, module) {
+      var notesClient = class {
+        loadNotes(callback) {
+          fetch("http://localhost:3000/notes").then((response) => response.json()).then((data) => callback(data));
+        }
+      };
+      module.exports = notesClient;
+    }
+  });
+
   // notesView.js
   var require_notesView = __commonJS({
     "notesView.js"(exports, module) {
       var model2 = require_notesModel();
+      var Client2 = require_notesClient();
       var notesView = class {
-        constructor(model3) {
+        constructor(model3, client2) {
           this.model = model3;
+          this.client = client2;
           this.buttonEl = document.querySelector("#add-note-button");
           this.buttonEl.addEventListener("click", () => {
             const newNote = document.querySelector("#message-input").value;
@@ -41,6 +58,12 @@
         addNewNote(note) {
           this.model.addNote(note);
           this.displayNotes();
+        }
+        displayNotesFromApi() {
+          const notes = this.client.loadNotes((note) => {
+            this.model.addNote(note);
+            this.displayNotes();
+          });
         }
         displayNotes() {
           const array = this.model.getNotes();
@@ -67,6 +90,9 @@
   // index.js
   var Notes = require_notesModel();
   var NotesView = require_notesView();
+  var Client = require_notesClient();
   var model = new Notes();
-  var view = new NotesView(model);
+  var client = new Client();
+  var view = new NotesView(model, client);
+  view.displayNotesFromApi();
 })();

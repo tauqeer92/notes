@@ -4,7 +4,9 @@
 
 const NotesView = require('./notesView');
 const NotesModel = require('./notesModel')
+jest.mock('./notesClient')
 const fs = require('fs');
+const NotesClient = require('./notesClient')
 
 describe('NotesView', () => {
     it('should display a note on the page', () => {
@@ -76,5 +78,22 @@ describe('NotesView', () => {
         expect(document.querySelectorAll('div.note').length).toBe(2);
     })
 
+    it('getting data from api', () => {
+        // Arrange
+        document.body.innerHTML = fs.readFileSync('./index.html');
+        const mockClient = {loadNotes: (fn) => {fn(["Test data fetch"])}}
+        // const client = { loadNotes: () => 'This note is coming from the server' }
+        const model = new NotesModel()
+        const view = new NotesView(model, mockClient)
+
+        // Act
+        view.displayNotesFromApi()
+
+
+        // Assert
+        expect(document.querySelectorAll('div.note').length).toBe(1)
+
+
+    })
 
 })

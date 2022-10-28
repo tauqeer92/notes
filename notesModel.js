@@ -4,6 +4,10 @@ class Notes {
         this.notes = [];
     }
 
+    setNotes(note) {
+        return note
+    }
+
 
     getNotes() {
         return this.notes;

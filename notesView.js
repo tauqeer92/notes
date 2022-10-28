@@ -1,9 +1,11 @@
 const model = require('./notesModel')
+const Client = require('./notesClient')
 
 class notesView {
 
-    constructor(model) {
+    constructor(model, client) {
         this.model = model;
+        this.client = client;
         this.buttonEl = document.querySelector('#add-note-button');
         this.buttonEl.addEventListener('click', () => {
             const newNote = document.querySelector('#message-input').value;
@@ -15,6 +17,19 @@ class notesView {
     addNewNote(note) {
         this.model.addNote(note);
         this.displayNotes();
+    }
+
+    displayNotesFromApi() {
+        
+        const notes = this.client.loadNotes((note) => {
+            this.model.addNote(note)
+            this.displayNotes();
+        })
+        // const notes = this.client.loadNotes()
+        // this.model.addNote(notes)
+        // this.displayNotes();
+        
+
     }
 
 
