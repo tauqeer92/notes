@@ -17,6 +17,8 @@ class notesView {
     addNewNote(note) {
         this.model.addNote(note);
         this.displayNotes();
+        this.client.createNote(note);
+        
     }
 
     displayNotesFromApi() {
@@ -28,8 +30,6 @@ class notesView {
         // const notes = this.client.loadNotes()
         // this.model.addNote(notes)
         // this.displayNotes();
-        
-
     }
 
 

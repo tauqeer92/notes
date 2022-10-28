@@ -35,6 +35,25 @@
         loadNotes(callback) {
           fetch("http://localhost:3000/notes").then((response) => response.json()).then((data) => callback(data));
         }
+        createNote(param) {
+          const data = { content: param };
+          fetch("http://localhost:3000/notes", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+          }).then((response) => response.json()).then((data2) => {
+            console.log("Success", data2);
+          }).catch((error) => {
+            console.error("Error", error);
+          });
+        }
+        deleteNote() {
+          fetch("http://localhost:3000/notes", {
+            method: "DELETE"
+          });
+        }
       };
       module.exports = notesClient;
     }
@@ -58,6 +77,7 @@
         addNewNote(note) {
           this.model.addNote(note);
           this.displayNotes();
+          this.client.createNote(note);
         }
         displayNotesFromApi() {
           const notes = this.client.loadNotes((note) => {
@@ -94,5 +114,7 @@
   var model = new Notes();
   var client = new Client();
   var view = new NotesView(model, client);
+  console.log(model.getNotes());
+  console.log(model.getNotes().length);
   view.displayNotesFromApi();
 })();
